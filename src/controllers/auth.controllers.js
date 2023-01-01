@@ -43,22 +43,23 @@ export const signup = async (req, res) => {
   const newUser = new User({ name, email, password });
   newUser.password = await newUser.encryptPassword(password);
   await newUser.save();
-  req.flash("success_msg", "You are registered.");
-  res.json({status:"ok",newUser});
+  res.json({
+    "success_msg": "You are registered.",
+    newUser
+  });
 };
 
 export const renderSigninForm = (req, res) => res.render("auth/signin");
 
 export const signin = passport.authenticate("local"
-// function(req, res){
-//   res.json({'error':"authorisation failed invalid credentials!"})
-//}
+  // function(req, res){
+  //   res.json({'error':"authorisation failed invalid credentials!"})
+  //}
 )
 
 export const logout = async (req, res, next) => {
   await req.logout((err) => {
     if (err) return next(err);
-    req.flash("success_msg", "You are logged out now.");
-    res.redirect("/auth/signin");
+    res.json({ "success_msg": "You are logged out now." });
   });
 };
