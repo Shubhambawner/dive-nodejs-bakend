@@ -4,7 +4,7 @@ config('.env');
 const uri = 'mongodb+srv://aikalpaAdmin:yft0mBaClxkEB8BG@cluster0.pz1ji.mongodb.net/aikalpa'
 
 export const PORT = process.env.PORT || 4000;
-export const MONGODB_URI = process.env.MONGODB_URI || uri || "mongodb://localhost/aikalpa";
+export const MONGODB_URI = process.env.MONGODB_URI ;
 
 // aikalpaAdmin
 // yft0mBaClxkEB8BG

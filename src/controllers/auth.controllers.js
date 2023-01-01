@@ -3,7 +3,9 @@ import passport from "passport";
 
 export const renderSignUpForm = (req, res) => res.render("auth/signup");
 
+let i = 0;
 export const signup = async (req, res) => {
+  console.log(i)
   let errors = [];
   const { name, email, password, confirm_password } = req.body;
   if (password !== confirm_password) {
@@ -15,7 +17,7 @@ export const signup = async (req, res) => {
   }
 
   if (errors.length > 0) {
-    return res.render("auth/signup", {
+    return res.json({
       errors,
       name,
       email,
@@ -27,8 +29,14 @@ export const signup = async (req, res) => {
   // Look for email coincidence
   const userFound = await User.findOne({ email: email });
   if (userFound) {
-    req.flash("error_msg", "The Email is already in use.");
-    return res.redirect("/auth/signup");
+    errors.push({ text: "The Email is already in use." });
+    return res.json({
+      errors,
+      name,
+      email,
+      password,
+      confirm_password,
+    });
   }
 
   // Saving a New User
@@ -41,7 +49,11 @@ export const signup = async (req, res) => {
 
 export const renderSigninForm = (req, res) => res.render("auth/signin");
 
-export const signin = passport.authenticate("local")
+export const signin = passport.authenticate("local"
+// function(req, res){
+//   res.json({'error':"authorisation failed invalid credentials!"})
+//}
+)
 
 export const logout = async (req, res, next) => {
   await req.logout((err) => {
